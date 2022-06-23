@@ -1,8 +1,5 @@
-const mongoose = require('mongoose')
-const crypto = require('crypto')
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema
-const { uuid } = require('uuidv4');
-
 
 const categorySchema = new Schema({
     name: {
