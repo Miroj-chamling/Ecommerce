@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const {ObjectId} = mongoose.Schema
+const { ObjectId } = mongoose.Schema
 const Schema = mongoose.Schema
 
 
@@ -29,7 +29,7 @@ const productSchema = new Schema({
     quantity: {
         type: Number,
     },
-    photo:{
+    photo: {
         data: Buffer,
         contentType: String
     },
@@ -37,7 +37,7 @@ const productSchema = new Schema({
         required: false,
         type: Boolean
     }
-},{
+}, {
     timestamps: true,
 });
 

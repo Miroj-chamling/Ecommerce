@@ -8,7 +8,7 @@ const categorySchema = new Schema({
         maxlength: 32,
         required: true,
     },
-},{
+}, {
     timestamps: true,
 });
 
