@@ -13,15 +13,14 @@ const productRoutes = require('./routes/product');
 const app = express()
 
 //connection to mongodb
-mongoose.connect(process.env.MONGO_URI,
-    {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    }).then(()=> console.log('DB connected suceessfully!'));
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).then(() => console.log('DB connected suceessfully!'));
 
 //middlewares
 app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(expressValidator());
@@ -34,6 +33,6 @@ app.use("/api", productRoutes);
 
 const port = process.env.PORT
 
-app.listen(port, ()=>{
+app.listen(port, () => {
     console.log(`app is running on the port ${port}`);
 })
