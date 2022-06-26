@@ -3,6 +3,8 @@ const formidable = require('formidable');
 const fs = require('fs');
 const _ = require('lodash');
 const { errorHandler } = require('../helpers/dbhandler');
+const { exec } = require('child_process');
+const category = require('../models/category');
 
 exports.productById = (req, res, next, id) => {
     Product.findById(id).exec((error, product) => {
@@ -31,14 +33,13 @@ exports.create = (req, res) => {
             })
         }
 
-        const { name, description, price, category, quantity, shipping } = fields
+        const { name, description, price, category, quantity, shipping } = fields;
 
         if (!name || !description || !price || !category || !quantity || !shipping) {
             return res.status(400).json({
                 error: "Please fill all the required fields."
             })
         }
-
         let product = new Product(fields)
         if (files.photo) {
             console.log(files.photo.size);
@@ -117,4 +118,53 @@ exports.remove = (req, res) => {
             "message": `${req.product.name} has been successfully deleted`
         })
     })
+}
+
+/**
+ * sorting by sell or arrival query
+ * by sell = /allproducts?sortby=sold&order=desc&limit=4
+ * by arrival = /allproducts?sortby=createdAt&order=desc&limit=4
+ */
+
+exports.list = (req, res, next) => {
+    let order = req.query.order ? req.query.order : 'asc';
+    let sortBy = req.query.sortBy ? req.query.sortBy : '_id';
+    let limit = req.query.limit ? parseInt(req.query.limit) : 6;
+
+    Product.find({})
+        .select('-photo')
+        .populate("category").sort(
+            [
+                [sortBy, order]
+            ]
+        )
+        .limit(limit)
+        .exec((err, data) => {
+            if (err) {
+                res.status(400).json({
+                    error: errorHandler(err)
+                })
+            }
+            res.json(data);
+        })
+}
+
+/**
+ * finding the product on the req product category
+ * other products of the same category will be returned
+ */
+
+exports.listRelated = (req, res) => {
+    let limit = req.query.limit ? parseInt(req.query.limit) : 6;
+    Product.find({ _id: { $ne: req.product }, category: req.product.category })
+        .limit(limit)
+        .populate("category", "_id name")
+        .exec((err, products) => {
+            if (err) {
+                return res.status(400).json({
+                    error: "Products not found"
+                })
+            }
+            res.json(products);
+        })
 }
