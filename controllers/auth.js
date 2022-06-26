@@ -49,7 +49,7 @@ exports.signin = (req, res) => {
 
 exports.signout = (req, res) => {
     res.clearCookie('t')
-    res.json({ message: `signed out successfully` });
+    res.json({ message: `${req.profile.name} signed out successfully` });
 }
 
 //using expressJwt for the authorization check
