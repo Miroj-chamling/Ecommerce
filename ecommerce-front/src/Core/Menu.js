@@ -20,9 +20,9 @@ const Menu = ({ history }) => (
 
       <li className="nav-item">
         <Link
+          to="/signin"
           className="nav-link"
           style={isActive(history, "/signin")}
-          to="/signin"
         >
           Signin
         </Link>
