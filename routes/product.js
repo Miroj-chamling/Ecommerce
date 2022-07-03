@@ -6,8 +6,6 @@ const { create, productById, read, remove, update, list, listRelated, listCatego
 const { requireSignin, isAuth, isAdmin } = require('../controllers/auth');
 const { userById } = require('../controllers/user');
 
-
-
 router.param("userId", userById);
 router.param("productId", productById);
 router.post('/product/create/:userId', requireSignin, isAuth, isAdmin, create);
