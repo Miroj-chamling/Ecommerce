@@ -89,7 +89,7 @@ const Signin = () => {
 
   return (
     <Layout
-      title="Signup"
+      title="Signin"
       description="Signup to Ecommerce-App"
       className="container col-md-8 offset-md-2"
     >
